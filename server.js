@@ -89,17 +89,17 @@ app.post('/api/packets', function (req, res) {
     });
 });
 
-
-var server = app.listen(app.get('port'), function () {
-    console.log('Server started: http://localhost:' + app.get('port') + '/');
-});
+function start() {
+    return app.server = app.listen(app.get('port'), function () {
+        console.log('Server started: http://localhost:' + app.get('port') + '/');
+    });
+}
 
 
 function gracefulShutdown() {
     console.log("Shutting down");
-    server.close();
+    app.server.close();
     client.shutdown();
-    process.exit();
 
     // if after
     setTimeout(function () {
@@ -113,3 +113,7 @@ process.on('SIGTERM', gracefulShutdown);
 
 // listen for INT signal e.g. Ctrl-C
 process.on('SIGINT', gracefulShutdown);
+
+exports.app = app;
+exports.start = start;
+exports.stop = gracefulShutdown;
