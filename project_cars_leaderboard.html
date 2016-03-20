@@ -5,24 +5,34 @@
 <body>
 <div class="container">
   <header>
-    <h1>Race List</h1>
+    <h1>Project CARS Leaderboard</h1>
 
     {{> loginButtons}}
-
-    {{#if currentUser}}
-      <form class="new-race">
-        <input type="text" name="driver" placeholder="Driver" value="{{currentUser.username}}"/>
-        <input type="text" name="carName" placeholder="Car Name"/>
-        <input type="text" name="carClassName" placeholder="Car Class Name"/>
-        <input type="text" name="trackLocation" placeholder="Track Location"/>
-        <input type="text" name="trackVariation" placeholder="Track Variation"/>
-        <input type="submit" name="submit" value="Save"/>
-      </form>
-    {{/if}}
   </header>
 
+  {{#if currentUser}}
+    <h3>Save Race</h3>
+    <form class="save-race">
+      <input type="text" name="driver" placeholder="Driver" value="{{currentUser.username}}"/>
+      <input type="text" name="lapTime" placeholder="Lap Time"/>
+      <input type="text" name="carName" placeholder="Car Name"/>
+      <input type="text" name="carClassName" placeholder="Car Class Name"/>
+      <input type="text" name="trackLocation" placeholder="Track Location"/>
+      <input type="text" name="trackVariation" placeholder="Track Variation"/>
+      <input type="submit" name="submit" value="Save"/>
+    </form>
+  {{/if}}
+
+  <h3>Unaved Races</h3>
   <ul>
-    {{#each races}}
+    {{#each unsavedRaces}}
+      {{> race}}
+    {{/each}}
+  </ul>
+
+  <h3>Saved Races</h3>
+  <ul>
+    {{#each savedRaces}}
       {{> race}}
     {{/each}}
   </ul>
@@ -30,10 +40,23 @@
 </body>
 
 <template name="race">
-  <li>
-    <button class="delete">&times;</button>
+  <li class="race {{#if _id}}saved{{else}}unsaved{{/if}}">
+    <span class="driver">
+      <strong>{{driver}}</strong>
+    </span>
+    :
+    <span class="time">
+      <strong>{{lapTime}}</strong>
+    </span>
+    -
+    <span class="car">
+      {{carName}}/{{carClassName}}
+    </span>
+    @
+    <span class="track">
+      {{trackLocation}} ({{trackVariation}})
+    </span>
 
-    <span class="text"><strong>{{driver}}</strong> - {{carName}}/{{carClassName}} @ {{trackLocation}}
-      ({{trackVariation}})</span>
+    <button class="delete">&times;</button>
   </li>
 </template>

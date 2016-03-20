@@ -4,6 +4,7 @@ body {
     background-color: black;
     background-image: url("http://cdn1.editmysite.com/uploads/2/0/6/5/20658008/background-images/1525247577.jpg");
     background-attachment: fixed;
+    color: white;
 
     position: absolute;
     top: 0;
@@ -24,13 +25,17 @@ body {
 }
 
 header {
-    color: white;
     padding: 20px 15px 15px 15px;
     position: relative;
 }
 
 #login-buttons {
     display: block;
+    float: right;
+}
+
+#login-dropdown-list {
+    position: relative;
 }
 
 h1 {
@@ -47,7 +52,7 @@ form {
     position: relative;
 }
 
-.new-race input {
+.save-race input {
     box-sizing: border-box;
     padding: 10px;
     background: transparent;
@@ -57,7 +62,7 @@ form {
     font-size: 1em;
 }
 
-.new-race input:focus {
+.save-race input:focus {
     outline: 1;
 }
 
@@ -65,6 +70,7 @@ ul {
     margin: 0;
     padding: 0;
     background: white;
+    color: black;
 }
 
 .delete {
@@ -83,25 +89,12 @@ li {
     border-bottom: #eee solid 1px;
 }
 
-li .text {
-    margin-left: 10px;
+li.race {
+    background: blue;
 }
 
-li.checked {
-    color: #888;
-}
-
-li.checked .text {
-    text-decoration: line-through;
-}
-
-li.private {
-    background: #eee;
-    border-color: #ddd;
-}
-
-header .hide-completed {
-    float: right;
+li.race.saved {
+    background-image: linear-gradient(to bottom, #aaaaaa, #ffffff 100%);
 }
 
 @media (max-width: 600px) {
@@ -114,7 +107,7 @@ header .hide-completed {
         clear: both;
     }
 
-    .new-race input {
+    .save-race input {
         padding-bottom: 5px;
     }
 }
