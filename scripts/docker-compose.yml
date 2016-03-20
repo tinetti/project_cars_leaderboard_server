@@ -1,0 +1,16 @@
+# See README.md for more information on how to use docker-compose
+cassandra:
+  # Docker image from global docker registry
+  image: library/cassandra:3
+  # Ports needed by the container
+  ports:
+    - "9160:9160"
+    - "9042:9042"
+  # Shared directory between my computer and container
+  volumes:
+    - ./cassandra:/cassandra
+
+redis:
+  image: redis:latest
+  ports:
+    - "6379:6379"
