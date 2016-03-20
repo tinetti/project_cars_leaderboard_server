@@ -18,14 +18,14 @@ client.on('error', function (err) {
     console.log('Error ' + err);
 });
 
-exports.clearTelemetryPackets = function () {
+module.exports.clearTelemetryPackets = function () {
     return client.delAsync(TELEMETRY_PACKETS).then(function (res) {
         winston.debug('cache.js - clear - res: ' + JSON.stringify(res));
         return res;
     });
 };
 
-exports.listTelemetryPackets = function () {
+module.exports.listTelemetryPackets = function () {
     return client.lrangeAsync(TELEMETRY_PACKETS, 0, 1000).then(function (res) {
         winston.debug('cache.js - list - res: ' + JSON.stringify(res));
         var packets = [];
@@ -36,7 +36,7 @@ exports.listTelemetryPackets = function () {
     });
 };
 
-exports.pushTelemetryPacket = function (packet, callback) {
+module.exports.pushTelemetryPacket = function (packet, callback) {
     var json = JSON.stringify(packet);
     return client.lpushAsync(TELEMETRY_PACKETS, json).then(function (res) {
         winston.debug('cache.js - push - packet: ' + json);

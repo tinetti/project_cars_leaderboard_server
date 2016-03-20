@@ -1,0 +1,41 @@
+{{!< layout/default}}
+
+<h1>{{title}}</h1>
+
+<div id="race-list-view"></div>
+
+<script>
+    var RaceModel = Backbone.Model.extend({});
+
+    var RaceCollection = Backbone.Collection.extend({
+        url: '/api/races',
+        model: RaceModel
+    });
+
+    var RaceCollectionView = Backbone.View.extend({
+        el: '#race-list-view',
+
+        initialize: function () {
+            this.listenTo(this.model, 'sync change', this.render);
+            this.model.fetch();
+            this.render();
+        },
+
+        render: function () {
+            this.model.forEach(function (race) {
+                html += '<div>';
+                ['CarName', 'CarClassName', 'TrackLocation', 'TrackVariation'].forEach(function (field) {
+                    html += '<span>' + race.get(field) + '</span>&nbsp;';
+                });
+                html += '</div>';
+            });
+            html += '</ul>';
+
+            this.$el.html(html);
+            return this;
+        }
+    });
+
+    var raceCollection = new RaceCollection();
+    var raceCollectionView = new RaceCollectionView({model: raceCollection});
+</script>

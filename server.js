@@ -2,8 +2,6 @@
 
 var Hapi = require('hapi');
 
-var cache = require('./cache.js');
-//var dataStore = require('./data_store.js');
 var routes = require('./routes.js').routes;
 
 // Create a server with a host and port
@@ -14,10 +12,6 @@ server.connection({
     port: port
 });
 
-for (var i = 0; i < routes.length; i++) {
-    server.route(routes[i]);
-}
-
 function start() {
     server.start(function (err) {
         if (err) {
@@ -27,6 +21,32 @@ function start() {
     });
 }
 
+server.register([{
+    register: require('inert')
+}, {
+    register: require('vision')
+}], function (err) {
+
+    if (err) return console.error(err);
+
+    server.views({
+        engines: {
+            html: require('handlebars')
+        },
+        path: 'views',
+        layoutPath: 'views/layout',
+        layout: 'default',
+        partialsPath: 'views/partials'
+        //helpersPath: 'views/helpers',
+    });
+
+    // Add routes from routes.js
+    for (var i = 0; i < routes.length; i++) {
+        server.route(routes[i]);
+    }
+});
+
+
 if (require.main === module) {
     start();
 }
@@ -34,4 +54,3 @@ else {
     exports.start = start;
     exports.port = port;
 }
-
