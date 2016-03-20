@@ -1,14 +1,39 @@
 <head>
-  <title>project_cars_leaderboard</title>
+  <title>Todo List</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+<div class="container">
+  <header>
+    <h1>Race List</h1>
 
-  {{> hello}}
+    {{> loginButtons}}
+
+    {{#if currentUser}}
+      <form class="new-race">
+        <input type="text" name="driver" placeholder="Driver" value="{{currentUser.username}}"/>
+        <input type="text" name="carName" placeholder="Car Name"/>
+        <input type="text" name="carClassName" placeholder="Car Class Name"/>
+        <input type="text" name="trackLocation" placeholder="Track Location"/>
+        <input type="text" name="trackVariation" placeholder="Track Variation"/>
+        <input type="submit" name="submit" value="Save"/>
+      </form>
+    {{/if}}
+  </header>
+
+  <ul>
+    {{#each races}}
+      {{> race}}
+    {{/each}}
+  </ul>
+</div>
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="race">
+  <li>
+    <button class="delete">&times;</button>
+
+    <span class="text"><strong>{{driver}}</strong> - {{carName}}/{{carClassName}} @ {{trackLocation}}
+      ({{trackVariation}})</span>
+  </li>
 </template>
