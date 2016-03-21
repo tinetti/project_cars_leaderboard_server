@@ -23,12 +23,6 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.race.helpers({
-    isSaved: function () {
-      return this._id;
-    }
-  });
-
   Template.body.events({
     "submit .save-race": function (event) {
       // Prevent default browser form submit
@@ -52,7 +46,7 @@ if (Meteor.isClient) {
     }
   });
 
-  Template.race.events({
+  Template.raceTableRow.events({
     "click .delete": function () {
       Meteor.call("deleteRace", this._id);
     }
