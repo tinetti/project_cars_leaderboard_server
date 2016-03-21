@@ -27,6 +27,13 @@ h1 {
     font-size: 50px;
 }
 
+.panel-heading .create-race {
+    position: relative;
+    float: right;
+    top: -15px;
+    cursor: pointer;
+}
+
 .save-race-panel-body {
     padding: 0;
 }
@@ -38,10 +45,33 @@ form.save-race {
     margin-bottom: 0;
 }
 
+th.actions {
+    text-align: right;
+}
+
+td.actions {
+    text-align: right;
+}
+
 .edit {
     cursor: pointer;
 }
 
 .delete {
     cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    li {
+        padding: 12px 15px;
+    }
+
+    .search {
+        width: 150px;
+        clear: both;
+    }
+
+    .new-task input {
+        padding-bottom: 5px;
+    }
 }

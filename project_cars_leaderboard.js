@@ -30,6 +30,16 @@ if (!Meteor.isClient) {
     }
   });
 
+  Template.body.events({
+    "click .create-race": function (event) {
+      var raceInfo = {
+        driver: Meteor.user().username
+      };
+
+      Session.set("editedRace", raceInfo);
+    }
+  });
+
   Template.editRace.events({
     "submit .save-race": function (event) {
       event.preventDefault();
@@ -50,6 +60,9 @@ if (!Meteor.isClient) {
       Meteor.call("saveRace", raceInfo);
 
       // Clear race
+      Session.set("editedRace", null);
+    },
+    "click .cancel": function (event) {
       Session.set("editedRace", null);
     }
   });
