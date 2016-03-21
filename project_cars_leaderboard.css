@@ -1,21 +1,5 @@
-/*!* CSS declarations go here *!*/
 body {
-    /*font-family: sans-serif;*/
-    /*background-color: black;*/
     background-image: url("http://cdn1.editmysite.com/uploads/2/0/6/5/20658008/background-images/1525247577.jpg");
-    /*background-attachment: fixed;*/
-    /*color: white;*/
-
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*bottom: 0;*/
-    /*left: 0;*/
-    /*right: 0;*/
-
-    /*padding: 0;*/
-    /*margin: 0;*/
-
-    /*font-size: 14px;*/
 }
 
 .container {
@@ -23,15 +7,6 @@ body {
     margin: 0 auto;
     min-height: 100%;
 }
-
-/*.panel-body {*/
-/*padding: 0;*/
-/*}*/
-
-/*header {*/
-/*padding: 20px 15px 15px 15px;*/
-/*position: relative;*/
-/*}*/
 
 #login-buttons {
     display: block;
@@ -52,63 +27,21 @@ h1 {
     font-size: 50px;
 }
 
-/*form {*/
-/*margin-top: 10px;*/
-/*margin-bottom: -10px;*/
-/*position: relative;*/
-/*}*/
+.save-race-panel-body {
+    padding: 0;
+}
 
-/*.save-race input {*/
-/*box-sizing: border-box;*/
-/*padding: 10px;*/
-/*background: transparent;*/
-/*border: none;*/
-/*color: white;*/
-/*!*width: 100%;*!*/
-/*font-size: 1em;*/
-/*}*/
+form.save-race {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
-/*.save-race input:focus {*/
-/*outline: 1;*/
-/*}*/
-
-/*ul {*/
-/*margin: 0;*/
-/*padding: 0;*/
-/*background: white;*/
-/*color: black;*/
-/*}*/
+.edit {
+    cursor: pointer;
+}
 
 .delete {
-    float: right;
+    cursor: pointer;
 }
-
-/*li {*/
-/*position: relative;*/
-/*list-style: none;*/
-/*padding: 15px;*/
-/*border-bottom: #eee solid 1px;*/
-/*}*/
-
-.race {
-    width: 100%;
-}
-
-/*li.race.saved {*/
-/*background-image: linear-gradient(to bottom, #aaaaaa, #ffffff 100%);*/
-/*}*/
-
-/*@media (max-width: 600px) {*/
-/*li {*/
-/*padding: 12px 15px;*/
-/*}*/
-
-/*.search {*/
-/*width: 150px;*/
-/*clear: both;*/
-/*}*/
-
-/*.save-race input {*/
-/*padding-bottom: 5px;*/
-/*}*/
-/*}*/

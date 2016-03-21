@@ -9,34 +9,7 @@
     {{> loginButtons}}
   </div>
 
-  {{#if currentUser}}
-    <div class="panel panel-info">
-      <div class="panel-heading">
-        <h3 class="panel-title">Save Race</h3>
-      </div>
-      <div class="panel-body">
-        <form class="save-race navbar-form navbar-left">
-          <div class="row">
-            <input class="col-xs-2" type="text" name="driver" placeholder="Driver" value="{{currentUser.username}}"/>
-            <input class="col-xs-3" type="text" name="lapTime" placeholder="Lap Time" autocomplete="off"/>
-            <input class="col-xs-4" type="text" name="carName" placeholder="Car Name"/>
-            <input class="col-xs-3" type="text" name="carClassName" placeholder="Car Class"/>
-          </div>
-          <div class="row">
-            <input class="col-xs-7" type="text" name="trackLocation" placeholder="Track Location"/>
-            <input class="col-xs-5" type="text" name="trackVariation" placeholder="Track Variation"/>
-          </div>
-          <div class="row">
-            <input type="submit" name="submit" class="btn-sm col-xs-12" value="Save"/>
-          </div>
-        </form>
-      </div>
-    </div>
-  {{/if}}
-
-  <br/>
-
-  <div class="panel panel-warning">
+  <div class="panel panel-danger">
     <div class="panel-heading">
       <h3 class="panel-title">Unsaved Races</h3>
     </div>
@@ -58,7 +31,7 @@
     {{/with}}
   </div>
 
-  <br/>
+  {{> editRace}}
 
   <div class="panel panel-success">
     <div class="panel-heading">
@@ -91,13 +64,47 @@
 </template>
 
 <template name="raceTableRow">
-  <tr>
+  <tr class="race">
     <td class="driver">{{driver}}</td>
     <td class="lapTime">{{lapTime}}</td>
     <td class="carName">{{carName}}</td>
     <td class="carClassName">{{carClassName}}</td>
     <td class="trackLocation">{{trackLocation}}</td>
     <td class="trackVariation">{{trackVariation}}</td>
+    <td><span class="edit glyphicon glyphicon-pencil"></span></td>
     <td><span class="delete glyphicon glyphicon-remove"></span></td>
   </tr>
+</template>
+
+<template name="editRace">
+  {{#if currentUser}}
+    {{#with editedRace}}
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Race</h3>
+        </div>
+        <div class="panel-body save-race-panel-body">
+          <form class="save-race navbar-form navbar-left">
+            <input type="hidden" name="_id" value="{{_id}}"/>
+            <input type="hidden" name="createdAt" value="{{createdAt}}"/>
+            <input type="hidden" name="createdBy" value="{{createdBy}}"/>
+            <div class="row">
+              <input class="col-xs-2" type="text" name="driver" placeholder="Driver" value="{{driver}}"/>
+              <input class="col-xs-3" type="text" name="lapTime" placeholder="Lap Time" autocomplete="off" value="{{lapTime}}"/>
+              <input class="col-xs-4" type="text" name="carName" placeholder="Car Name" value="{{carName}}"/>
+              <input class="col-xs-3" type="text" name="carClassName" placeholder="Car Class" value="{{carClassName}}"/>
+            </div>
+            <div class="row">
+              <input class="col-xs-7" type="text" name="trackLocation" placeholder="Track Location" value="{{trackLocation}}"/>
+              <input class="col-xs-5" type="text" name="trackVariation" placeholder="Track Variation" value="{{trackVariation}}"/>
+            </div>
+            <div class="row">
+              <input type="submit" class="btn-success save" value="Update">
+              <input type="submit" class="btn-danger reset" value="Cancel">
+            </div>
+          </form>
+        </div>
+      </div>
+    {{/with}}
+  {{/if}}
 </template>
