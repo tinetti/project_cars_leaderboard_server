@@ -1,5 +1,4 @@
 SavedRaces = new Mongo.Collection("savedRaces");
-UnsavedRaces = new Meteor.RedisCollection("redis");
 
 if (Meteor.isServer) {
   Meteor.publish("savedRaces", function () {
