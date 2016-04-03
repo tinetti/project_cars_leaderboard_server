@@ -25,6 +25,7 @@ if (Meteor.isServer) {
         done = this.done;
 
         lap = {
+          driver: "",
           lapTime: this.bodyParams.lapTime,
           carName: this.bodyParams.carName,
           carClassName: this.bodyParams.carClassName,
@@ -61,10 +62,10 @@ if (Meteor.isServer) {
 
   Template.body.helpers({
     savedLaps: function () {
-      return Laps.find({driver: true}, {sort: {createdAt: -1}});
+      return Laps.find({driver: {$ne: ""}}, {sort: {createdAt: -1}});
     },
     unsavedLaps: function () {
-      return Laps.find({driver: null}, {sort: {createdAt: -1}});
+      return Laps.find({driver: ""}, {sort: {createdAt: -1}});
     }
   });
 
