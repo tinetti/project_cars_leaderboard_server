@@ -1,46 +1,91 @@
-SavedRaces = new Mongo.Collection("savedRaces");
+Laps = new Mongo.Collection("laps");
 
 if (Meteor.isServer) {
-  Meteor.publish("savedRaces", function () {
-    return SavedRaces.find({});
+  Meteor.publish("laps", function () {
+    return Laps.find({});
   });
-  Meteor.publish("unsavedRaces", function () {
-    return UnsavedRaces.matching("race-*");
-  });
-}
+  Meteor.startup(function () {
+    Api = new Restivus({
+      version: 'v1',
+      useDefaultAuth: true,
+      prettyJson: true
+    });
 
-if (!Meteor.isClient) {
+    Api.addCollection(Meteor.users);
+
+    Api.addRoute('laps', {authRequired: true}, {
+      get: {
+        authRequired: false,
+        action: function () {
+          return Laps.find({}).fetch();
+        }
+      },
+      post: function () {
+        response = this.response;
+        done = this.done;
+
+        lap = {
+          lapTime: this.bodyParams.lapTime,
+          carName: this.bodyParams.carName,
+          carClassName: this.bodyParams.carClassName,
+          trackLocation: this.bodyParams.trackLocation,
+          trackVariation: this.bodyParams.trackVariation,
+          createdAt: new Date(),
+          createdBy: this.userId
+        };
+
+        if (!lap.carName && !lap.trackLocation) {
+          response.statusCode = 400;
+          response.write(JSON.stringify({message: "carName and trackLocation are required"}))
+        } else {
+          Laps.insert(lap, function (err, _id) {
+            if (err) {
+              responseText = JSON.stringify(err);
+            } else {
+              lap._id = _id;
+              responseText = JSON.stringify(lap);
+            }
+
+            response.write(responseText);
+          });
+        }
+
+        done();
+
+        return true;
+      }
+    });
+  });
 } else {
-  Meteor.subscribe("savedRaces");
-  Meteor.subscribe("unsavedRaces");
+  Meteor.subscribe("laps");
 
   Template.body.helpers({
-    savedRaces: function () {
-      return SavedRaces.find({}, {sort: {createdAt: -1}});
+    savedLaps: function () {
+      return Laps.find({driver: true}, {sort: {createdAt: -1}});
     },
-    unsavedRaces: function () {
-      return UnsavedRaces.matching("race-*");
+    unsavedLaps: function () {
+      return Laps.find({driver: null}, {sort: {createdAt: -1}});
     }
   });
 
-  Template.editRace.helpers({
-    editedRace: function () {
-      return Session.get("editedRace");
+  Template.editLap.helpers({
+    editedLap: function () {
+      return Session.get("editedLap");
     }
   });
 
   Template.body.events({
-    "click .create-race": function (event) {
-      var raceInfo = {
+    "click .create-lap": function (event) {
+      var lapInfo = {
         driver: Meteor.user().username
       };
 
-      Session.set("editedRace", raceInfo);
+      Session.set("editedLap", lapInfo);
     }
   });
 
-  Template.editRace.events({
-    "submit .save-race": function (event) {
+  Template.editLap.events({
+    "submit .save-lap": function (event) {
       event.preventDefault();
 
       function v(name) {
@@ -50,29 +95,29 @@ if (!Meteor.isClient) {
 
       // Get values from form element
       var fields = ["_id", "driver", "lapTime", "carName", "carClassName", "trackLocation", "trackVariation", "createdAt", "createdBy", "modifiedAt", "modifiedBy"];
-      var raceInfo = {};
+      var lapInfo = {};
       for (var i = 0; i < fields.length; i++) {
-        raceInfo[fields[i]] = v(fields[i]);
+        lapInfo[fields[i]] = v(fields[i]);
       }
 
-      // Insert a race into the collection
-      Meteor.call("saveRace", raceInfo);
+      // Insert a lap into the collection
+      Meteor.call("saveLap", lapInfo);
 
-      // Clear race
-      Session.set("editedRace", null);
+      // Clear lap
+      Session.set("editedLap", null);
     },
     "click .cancel": function (event) {
-      Session.set("editedRace", null);
+      Session.set("editedLap", null);
     }
   });
 
-  Template.raceTableRow.events({
+  Template.lapTableRow.events({
     "click .edit": function () {
-      Session.set("editedRace", this);
+      Session.set("editedLap", this);
     },
 
     "click .delete": function () {
-      Meteor.call("deleteRace", this._id);
+      Meteor.call("deleteLap", this._id);
     }
   });
 
@@ -82,45 +127,45 @@ if (!Meteor.isClient) {
 }
 
 Meteor.methods({
-  saveRace: function (raceInfo) {
-    // Make sure the user is logged in before inserting a race
+  saveLap: function (lapInfo, callback) {
+    // Make sure the user is logged in before inserting a lap
     if (!Meteor.userId()) {
       throw new Meteor.Error("not-authorized");
     }
 
-    if (raceInfo._id) {
-      SavedRaces.update({_id: raceInfo._id}, {
-        _id: raceInfo._id,
-        driver: raceInfo.driver,
-        lapTime: raceInfo.lapTime,
-        carName: raceInfo.carName,
-        carClassName: raceInfo.carClassName,
-        trackLocation: raceInfo.trackLocation,
-        trackVariation: raceInfo.trackVariation,
-        createdAt: raceInfo.createdAt,
-        createdBy: raceInfo.createdBy,
+    if (lapInfo._id) {
+      Laps.update({_id: lapInfo._id}, {
+        _id: lapInfo._id,
+        driver: lapInfo.driver,
+        lapTime: lapInfo.lapTime,
+        carName: lapInfo.carName,
+        carClassName: lapInfo.carClassName,
+        trackLocation: lapInfo.trackLocation,
+        trackVariation: lapInfo.trackVariation,
+        createdAt: lapInfo.createdAt,
+        createdBy: lapInfo.createdBy,
         modifiedAt: new Date(),
         modifiedBy: Meteor.userId()
-      });
+      }, callback);
     } else {
-      SavedRaces.insert({
-        driver: raceInfo.driver,
-        lapTime: raceInfo.lapTime,
-        carName: raceInfo.carName,
-        carClassName: raceInfo.carClassName,
-        trackLocation: raceInfo.trackLocation,
-        trackVariation: raceInfo.trackVariation,
+      Laps.insert({
+        driver: lapInfo.driver,
+        lapTime: lapInfo.lapTime,
+        carName: lapInfo.carName,
+        carClassName: lapInfo.carClassName,
+        trackLocation: lapInfo.trackLocation,
+        trackVariation: lapInfo.trackVariation,
         createdAt: new Date(),
         createdBy: Meteor.userId()
-      });
+      }, callback);
     }
   },
-  deleteRace: function (raceId) {
+  deleteLap: function (lapId) {
     if (!Meteor.userId()) {
-      // Make sure the user is logged in before deleting a race
+      // Make sure the user is logged in before deleting a lap
       throw new Meteor.Error("not-authorized");
     }
 
-    SavedRaces.remove(raceId);
+    Laps.remove(lapId);
   }
 });

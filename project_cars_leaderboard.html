@@ -11,42 +11,42 @@
 
   <div class="panel panel-danger">
     <div class="panel-heading">
-      <h3 class="panel-title">Unsaved Races</h3>
+      <h3 class="panel-title">Unsaved Laps</h3>
     </div>
-    {{#with unsavedRaces}}
+    {{#with unsavedLaps}}
       {{#if count}}
         <table class="table table-striped table-hover">
           <thead>
-          {{> raceTableHeader}}
+          {{> lapTableHeader}}
           </thead>
           <tbody>
-          {{#each unsavedRaces}}
-            {{> raceTableRow}}
+          {{#each unsavedLaps}}
+            {{> lapTableRow}}
           {{/each}}
           </tbody>
         </table>
       {{else}}
-        <div class="panel-body">No Unsaved Races</div>
+        <div class="panel-body">No Unsaved Laps</div>
       {{/if}}
     {{/with}}
   </div>
 
-  {{> editRace}}
+  {{> editLap}}
 
   <div class="panel panel-success">
     <div class="panel-heading">
-      <h3 class="panel-title">Saved Races</h3>
+      <h3 class="panel-title">Saved Laps</h3>
       {{#if currentUser}}
-        <span class="create-race glyphicon glyphicon-plus"></span>
+        <span class="create-lap glyphicon glyphicon-plus"></span>
       {{/if}}
     </div>
     <table class="table table-striped table-hover">
       <thead>
-      {{> raceTableHeader}}
+      {{> lapTableHeader}}
       </thead>
       <tbody>
-      {{#each savedRaces}}
-        {{> raceTableRow}}
+      {{#each savedLaps}}
+        {{> lapTableRow}}
       {{/each}}
       </tbody>
     </table>
@@ -54,7 +54,7 @@
 </div>
 </body>
 
-<template name="raceTableHeader">
+<template name="lapTableHeader">
   <tr>
     <th>Driver</th>
     <th>Lap Time</th>
@@ -66,8 +66,8 @@
   </tr>
 </template>
 
-<template name="raceTableRow">
-  <tr class="race">
+<template name="lapTableRow">
+  <tr class="lap">
     <td class="driver">{{driver}}</td>
     <td class="lapTime">{{lapTime}}</td>
     <td class="track">{{trackLocation}} - {{trackVariation}}</td>
@@ -81,15 +81,15 @@
   </tr>
 </template>
 
-<template name="editRace">
+<template name="editLap">
   {{#if currentUser}}
-    {{#with editedRace}}
+    {{#with editedLap}}
       <div class="panel panel-primary">
         <div class="panel-heading">
-          <h3 class="panel-title">{{#if _id}}Edit{{else}}Create{{/if}} Race</h3>
+          <h3 class="panel-title">{{#if _id}}Edit{{else}}Create{{/if}} Lap</h3>
         </div>
-        <div class="panel-body save-race-panel-body">
-          <form class="save-race navbar-form navbar-left">
+        <div class="panel-body save-lap-panel-body">
+          <form class="save-lap navbar-form navbar-left">
             <input type="hidden" name="_id" value="{{_id}}"/>
             <input type="hidden" name="createdAt" value="{{createdAt}}"/>
             <input type="hidden" name="createdBy" value="{{createdBy}}"/>

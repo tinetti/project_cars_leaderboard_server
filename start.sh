@@ -1,5 +1,3 @@
 #!/bin/bash
 
-REDIS_URL=${REDIS_URL:-"redis://127.0.0.1:6379"}
-
-env REDIS_CONFIGURE_KEYSPACE_NOTIFICATIONS=1 REDIS_URL=${REDIS_URL} meteor
+meteor
