@@ -1,6 +1,8 @@
 Laps = new Mongo.Collection("laps");
 
 if (Meteor.isServer) {
+//  logger = Meteor.require('winston');
+
   Meteor.publish("laps", function () {
     return Laps.find({});
   });
@@ -56,6 +58,8 @@ if (Meteor.isServer) {
         return true;
       }
     });
+
+//    logger.info("server started");
   });
 } else {
   Meteor.subscribe("laps");
